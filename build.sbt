@@ -22,6 +22,8 @@ scalariformSettings
 libraryDependencies ++= Seq(
   "org.specs2" %% "specs2" % "2.3.10" % "test",
   "org.scalatest" %% "scalatest" % "2.1.5",
+  "org.scalatest" %% "scalatest" % "2.1.5",
+  "com.typesafe.play" %% "play-json" % "2.3.9",
   "joda-time" % "joda-time" % "2.9.2")
 
 
