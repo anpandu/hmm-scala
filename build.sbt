@@ -5,7 +5,7 @@ organization := "org.example"
 
 name := """hmm-scala"""
 
-version := "1.0.0"
+version := "0.1.0"
 
 scalaVersion := "2.10.3"
 
@@ -22,6 +22,8 @@ scalariformSettings
 libraryDependencies ++= Seq(
   "org.specs2" %% "specs2" % "2.3.10" % "test",
   "org.scalatest" %% "scalatest" % "2.1.5",
+  "org.scalatest" %% "scalatest" % "2.1.5",
+  "com.typesafe.play" %% "play-json" % "2.3.9",
   "joda-time" % "joda-time" % "2.9.2")
 
 
