@@ -1,0 +1,42 @@
+[
+  [
+    ["Saya", "PRP"],
+    ["terkena", "VBT"],
+    ["bisa", "NN"],
+    ["ular", "NN"],
+    [".", "."]
+  ],
+  [
+    ["Bisa", "NN"],
+    ["ular", "NN"],
+    ["bisa", "MD"],
+    ["membunuh", "VBT"],
+    ["orang", "NN"],
+    [".", "."]
+  ],
+  [
+    ["Kamu", "PRP"],
+    ["bisa", "MD"],
+    ["tidur", "VBI"],
+    [".", "."]
+  ],
+  [
+    ["Burung", "NN"],
+    ["bisa", "MD"],
+    ["terbang", "VBI"],
+    [".", "."]
+  ],
+  [
+    ["Kamu", "PRP"],
+    ["bisa", "MD"]
+  ],
+  [
+    ["Rani", "NNP"],
+    ["dan", "CC"],
+    ["Budi", "NNP"],
+    ["duduk", "VBI"],
+    ["di", "IN"],
+    ["bangku", "NN"],
+    [".", "."]
+  ]
+]

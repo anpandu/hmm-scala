@@ -2,6 +2,7 @@ package com.anpandu.hmm
 
 import play.api.libs.json._
 import scala.collection.mutable.{ Map, SynchronizedMap, HashMap }
+import scala.io.Source
 
 class HMM(val sentences: List[List[List[String]]],
     val tags: List[String],
@@ -14,6 +15,13 @@ class HMM(val sentences: List[List[List[String]]],
 }
 
 object HMMFactory {
+
+  def createFromFile(_path: String) = {
+    val source = Source.fromFile(_path)
+    val content = source.getLines.toList.mkString
+    source.close()
+    create(content)
+  }
 
   def create(_sentences: String): HMM = {
     var dict = getDict(_sentences)
