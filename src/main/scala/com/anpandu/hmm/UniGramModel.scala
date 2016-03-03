@@ -1,7 +1,7 @@
 package com.anpandu.hmm
 
 import play.api.libs.json._
-import scala.collection.mutable.{ Map, SynchronizedMap, HashMap }
+import scala.collection.immutable.{ Map, HashMap }
 
 class UniGramModel(val memory: Map[String, Int]) {
 
@@ -20,6 +20,11 @@ object UniGramModelFactory {
     var sentences = Json.parse(_sentences).as[List[List[List[String]]]]
     var tags = getTags(sentences)
     var memory = getMemory(sentences, tags)
+    new UniGramModel(memory)
+  }
+
+  def createFromJSON(_json: String): UniGramModel = {
+    var memory = Json.parse(_json).as[Map[String, Int]]
     new UniGramModel(memory)
   }
 

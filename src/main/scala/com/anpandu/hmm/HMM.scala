@@ -1,7 +1,7 @@
 package com.anpandu.hmm
 
 import play.api.libs.json._
-import scala.collection.mutable.{ Map, SynchronizedMap, HashMap }
+import scala.collection.immutable.{ Map, HashMap }
 import scala.io.Source
 
 class HMM(val sentences: List[List[List[String]]],
@@ -32,11 +32,40 @@ class HMM(val sentences: List[List[List[String]]],
     countWordTag(word, tag) / countUniGramTag(tag)
   }
 
+  def export(): String = {
+    val json: JsValue = JsObject(Seq(
+      "sentences" -> Json.toJson(sentences),
+      "tags" -> Json.toJson(tags),
+      "dict" -> Json.toJson(dict.toMap),
+      "unigram" -> Json.toJson(unigram.memory.toMap),
+      "bigram" -> Json.toJson(bigram.memory.toMap),
+      "trigram" -> Json.toJson(trigram.memory.toMap),
+      "wordtag" -> Json.toJson(wordtag.memory.toMap)
+    ))
+    Json.stringify(json)
+  }
+
 }
 
 object HMMFactory {
 
-  def createFromFile(_path: String, _threshold: Int = 5) = {
+  def createFromModel(_path: String) = {
+    val source = Source.fromFile(_path)
+    val content = source.getLines.toList.mkString
+    source.close()
+
+    var json = Json.parse(content)
+    var dict = (json \ "dict").as[Map[String, Int]]
+    var sentences = (json \ "sentences").as[List[List[List[String]]]]
+    var tags = (json \ "tags").as[List[String]]
+    var unigram = UniGramModelFactory.createFromJSON(Json.stringify((json \ "unigram")))
+    var bigram = BiGramModelFactory.createFromJSON(Json.stringify((json \ "bigram")))
+    var trigram = TriGramModelFactory.createFromJSON(Json.stringify((json \ "trigram")))
+    var wordtag = WordTagModelFactory.createFromJSON(Json.stringify((json \ "wordtag")))
+    new HMM(sentences, tags, dict, unigram, bigram, trigram, wordtag)
+  }
+
+  def createFromCorpus(_path: String, _threshold: Int = 5) = {
     val source = Source.fromFile(_path)
     val content = source.getLines.toList.mkString
     source.close()

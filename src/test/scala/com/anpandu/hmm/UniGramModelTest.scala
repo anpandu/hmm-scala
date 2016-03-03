@@ -28,6 +28,10 @@ class UniGramModelTest extends FunSpec with ScalaFutures with TimeLimitedTests {
       val unigram: UniGramModel = UniGramModelFactory.create(ex_sentences)
       assert(unigram.memory == ex_memory)
       assert(unigram.toJSON() == ex_memory_json)
+
+      val unigram2: UniGramModel = UniGramModelFactory.createFromJSON(ex_memory_json)
+      assert(unigram2.memory == ex_memory)
+      assert(unigram2.toJSON() == ex_memory_json)
     }
 
     it("countTag") {

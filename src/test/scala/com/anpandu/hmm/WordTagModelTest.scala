@@ -28,6 +28,10 @@ class WordTagModelTest extends FunSpec with ScalaFutures with TimeLimitedTests {
       val wordtag: WordTagModel = WordTagModelFactory.create(ex_sentences)
       assert(wordtag.memory == ex_memory)
       assert(wordtag.toJSON() == ex_memory_json)
+
+      val wordtag2: WordTagModel = WordTagModelFactory.createFromJSON(ex_memory_json)
+      assert(wordtag2.memory == ex_memory)
+      assert(wordtag2.toJSON() == ex_memory_json)
     }
 
     it("countWordTag") {

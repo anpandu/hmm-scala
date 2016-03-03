@@ -28,6 +28,10 @@ class BiGramModelTest extends FunSpec with ScalaFutures with TimeLimitedTests {
       val bigram: BiGramModel = BiGramModelFactory.create(ex_sentences)
       assert(bigram.memory == ex_memory)
       assert(bigram.toJSON() == ex_memory_json)
+
+      val bigram2: BiGramModel = BiGramModelFactory.createFromJSON(ex_memory_json)
+      assert(bigram2.memory == ex_memory)
+      assert(bigram2.toJSON() == ex_memory_json)
     }
 
     it("countTag") {

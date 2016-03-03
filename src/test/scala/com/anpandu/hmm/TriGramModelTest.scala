@@ -28,6 +28,10 @@ class TriGramModelTest extends FunSpec with ScalaFutures with TimeLimitedTests {
       val trigram: TriGramModel = TriGramModelFactory.create(ex_sentences)
       assert(trigram.memory == ex_memory)
       assert(trigram.toJSON() == ex_memory_json)
+
+      val trigram2: TriGramModel = TriGramModelFactory.createFromJSON(ex_memory_json)
+      assert(trigram2.memory == ex_memory)
+      assert(trigram2.toJSON() == ex_memory_json)
     }
 
     it("countTag") {
