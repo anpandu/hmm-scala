@@ -37,14 +37,18 @@ object UniGramModelFactory {
 
   def getMemory(sentences: List[List[List[String]]], tags: List[String]): HashMap[String, Int] = {
     var memory = new HashMap[String, Int]
-    tags.foreach((tag) => { memory += (tag -> countTag(sentences, tag)) })
+    var new_tags = tags :+ "_START_"
+    new_tags.foreach((tag) => { memory += (tag -> countTag(sentences, tag)) })
     memory
   }
 
   def countTag(sentences: List[List[List[String]]], tag: String): Int = {
-    sentences
-      .flatten
-      .filter((token) => { (token(1) == tag) })
-      .length
+    if (tag == "_START_" || tag == "_STOP_")
+      return sentences.length
+    else
+      return sentences
+        .flatten
+        .filter((token) => { (token(1) == tag) })
+        .length
   }
 }
