@@ -12,6 +12,8 @@ class HMM(val sentences: List[List[List[String]]],
     val trigram: TriGramModel,
     val wordtag: WordTagModel) {
 
+  val sentences_length = sentences.flatten.length.toDouble
+
   def countUniGramTag(tag: String): Int = {
     unigram.countTag(tag)
   }
@@ -30,6 +32,25 @@ class HMM(val sentences: List[List[List[String]]],
 
   def emission(word: String, tag: String): Int = {
     countWordTag(word, tag) / countUniGramTag(tag)
+  }
+
+  def q(tag1: String, tag2: String, tag3: String): Double = {
+    val x: Double = 1.toDouble / 3.toDouble
+    val y: Double = 1.toDouble / 3.toDouble
+    val z: Double = 1.toDouble / 3.toDouble
+
+    val ct123 = countTriGramTag(tag1, tag2, tag3).toDouble
+    val ct12 = countBiGramTag(tag1, tag2).toDouble
+    val ct23 = countBiGramTag(tag2, tag3).toDouble
+    val ct2 = countUniGramTag(tag2).toDouble
+    val ct3 = countUniGramTag(tag3).toDouble
+    val s = sentences_length
+
+    val a: Double = if (ct12 == 0) 0 else ct123 / ct12
+    val b: Double = if (ct2 == 0) 0 else ct23 / ct2
+    val c: Double = if (s == 0) 0 else ct3 / s
+
+    x * a + y * b + z * c
   }
 
   def export(): String = {

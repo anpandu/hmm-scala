@@ -79,7 +79,7 @@ class HMMTest extends FunSpec with ScalaFutures with TimeLimitedTests {
       assert(hmm2.sentences == ex_new_sentences)
     }
 
-    it("countTag, countWordTag, emission") {
+    it("countTag, countWordTag") {
       val path = getClass.getResource("/corpus2.crp.json").getFile
       val hmm: HMM = HMMFactory.createFromCorpus(path)
       assert(hmm.countUniGramTag("NN") == 35)
@@ -88,7 +88,15 @@ class HMMTest extends FunSpec with ScalaFutures with TimeLimitedTests {
       assert(hmm.countWordTag("bisa", "MD") == 4)
       assert(hmm.countWordTag("di", "IN") == 5)
       assert(hmm.countUniGramTag("IN") == 7)
+    }
+
+    it("emission, q") {
+      val path = getClass.getResource("/corpus2.crp.json").getFile
+      val hmm: HMM = HMMFactory.createFromCorpus(path)
+
       assert(hmm.emission("di", "IN") == 5 / 7)
+      assert(hmm.q("VBI", "IN", "NN") == 0.5692186266771901)
+      assert(hmm.q("_START_", "_START_", "NN") == 0.3403187908808027)
     }
   }
 }
