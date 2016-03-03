@@ -22,12 +22,10 @@ class BiGramModelTest extends FunSpec with ScalaFutures with TimeLimitedTests {
 
     it("Basic") {
       val ex_sentences = """[[["Saya","PRP"],["terkena","VBT"],["bisa","NN"],["ular","NN"],[".","."]],[["Bisa","NN"],["ular","NN"],["bisa","MD"],["membunuh","VBT"],["orang","NN"],[".","."]],[["Kamu","PRP"],["bisa","MD"],["tidur","VBI"],[".","."]],[["Burung","NN"],["bisa","MD"],["terbang","VBI"],[".","."]],[["Kamu","PRP"],["bisa","MD"]],[["Rani","NNP"],["dan","CC"],["Budi","NNP"],["duduk","VBI"],["di","IN"],["bangku","NN"],[".","."]]]"""
-      val ex_tags = List("PRP", "VBT", "NN", ".", "MD", "VBI", "NNP", "CC", "IN")
       val ex_memory = Map("NN_NN" -> 2, "MD_VBI" -> 2, "VBI_IN" -> 1, "NNP_CC" -> 1, "_START__NN" -> 2, "NNP_VBI" -> 1, "VBI_." -> 2, "_START___START_" -> 6, "MD_VBT" -> 1, "_START__PRP" -> 3, "_START__NNP" -> 1, "PRP_VBT" -> 1, "PRP_MD" -> 2, "VBT_NN" -> 2, "IN_NN" -> 1, "NN_." -> 3, "NN_MD" -> 2, "CC_NNP" -> 1)
       val ex_memory_json = """{"CC_NNP":1,"NN_NN":2,"_START__NN":2,"MD_VBI":2,"PRP_MD":2,"VBT_NN":2,"NNP_VBI":1,"_START__NNP":1,"NN_MD":2,"_START___START_":6,"NN_.":3,"VBI_.":2,"VBI_IN":1,"IN_NN":1,"_START__PRP":3,"PRP_VBT":1,"MD_VBT":1,"NNP_CC":1}"""
 
       val bigram: BiGramModel = BiGramModelFactory.create(ex_sentences)
-      assert(bigram.tags == ex_tags)
       assert(bigram.memory == ex_memory)
       assert(bigram.toJSON() == ex_memory_json)
     }

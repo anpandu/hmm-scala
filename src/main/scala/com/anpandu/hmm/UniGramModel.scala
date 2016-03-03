@@ -3,7 +3,7 @@ package com.anpandu.hmm
 import play.api.libs.json._
 import scala.collection.mutable.{ Map, SynchronizedMap, HashMap }
 
-class UniGramModel(val tags: List[String], val memory: Map[String, Int]) {
+class UniGramModel(val memory: Map[String, Int]) {
 
   def countTag(tag: String): Int = {
     memory getOrElse (tag, 0)
@@ -20,7 +20,7 @@ object UniGramModelFactory {
     var sentences = Json.parse(_sentences).as[List[List[List[String]]]]
     var tags = getTags(sentences)
     var memory = getMemory(sentences, tags)
-    new UniGramModel(tags, memory)
+    new UniGramModel(memory)
   }
 
   def getTags(sentences: List[List[List[String]]]): List[String] = {
