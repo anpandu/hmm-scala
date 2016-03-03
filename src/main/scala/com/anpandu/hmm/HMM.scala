@@ -28,6 +28,10 @@ class HMM(val sentences: List[List[List[String]]],
     wordtag.countWordTag(word, tag)
   }
 
+  def emission(word: String, tag: String): Int = {
+    countWordTag(word, tag) / countUniGramTag(tag)
+  }
+
 }
 
 object HMMFactory {
