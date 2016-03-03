@@ -12,6 +12,22 @@ class HMM(val sentences: List[List[List[String]]],
     val trigram: TriGramModel,
     val wordtag: WordTagModel) {
 
+  def countUniGramTag(tag: String): Int = {
+    unigram.countTag(tag)
+  }
+
+  def countBiGramTag(tag: String, tag2: String): Int = {
+    bigram.countTag(tag, tag2)
+  }
+
+  def countTriGramTag(tag: String, tag2: String, tag3: String): Int = {
+    trigram.countTag(tag, tag2, tag3)
+  }
+
+  def countWordTag(word: String, tag: String): Int = {
+    wordtag.countWordTag(word, tag)
+  }
+
 }
 
 object HMMFactory {
