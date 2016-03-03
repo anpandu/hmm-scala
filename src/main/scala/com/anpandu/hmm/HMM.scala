@@ -36,16 +36,16 @@ class HMM(val sentences: List[List[List[String]]],
 
 object HMMFactory {
 
-  def createFromFile(_path: String) = {
+  def createFromFile(_path: String, _threshold: Int = 5) = {
     val source = Source.fromFile(_path)
     val content = source.getLines.toList.mkString
     source.close()
-    create(content)
+    create(content, _threshold)
   }
 
-  def create(_sentences: String): HMM = {
+  def create(_sentences: String, _threshold: Int = 5): HMM = {
     var dict = getDict(_sentences)
-    var sentences = getSentences(_sentences, dict, 2)
+    var sentences = getSentences(_sentences, dict, _threshold)
     var tags = getTags(sentences)
     var unigram = UniGramModelFactory.create(_sentences)
     var bigram = BiGramModelFactory.create(_sentences)
