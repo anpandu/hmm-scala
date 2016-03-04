@@ -71,6 +71,25 @@ class HMM(val sentences: List[List[List[String]]],
     }
   }
 
+  def getTagSequence(_words: List[String]): List[String] = {
+    // val words = HMMFactory.preprocessWords(_words, dict)
+    val words = _words
+    val n = words.length - 1
+    var candidate_tags: List[(String, String)] = List()
+    tags.foreach((tag2) => {
+      tags.foreach((tag3) => {
+        val score = countBiGramTag(tag2, tag3).toDouble * emission(words(n), tag3)
+        if (score > 0)
+          candidate_tags = candidate_tags :+ (tag2, tag3)
+      })
+    })
+    var result = candidate_tags
+      .map((tup) => { pi(n, words, tup._1, tup._2) })
+      .maxBy((tup) => { tup._1 })
+      ._2
+    result
+  }
+
   def export(): String = {
     val json: JsValue = JsObject(Seq(
       "sentences" -> Json.toJson(sentences),
@@ -185,5 +204,16 @@ object HMMFactory {
         })
       answer
     }
+  }
+
+  def preprocessWords(_words: List[String], _dict: Map[String, Int], _threshold: Int = 5): List[String] = {
+    val words = _words
+      .zipWithIndex
+      .map((e) => {
+        val (word, idx) = e
+        val result = if (_dict(word) < _threshold) transformWord(word, idx) else word
+        result
+      })
+    words
   }
 }

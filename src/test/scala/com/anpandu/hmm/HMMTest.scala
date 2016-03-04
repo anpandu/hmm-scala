@@ -99,16 +99,18 @@ class HMMTest extends FunSpec with ScalaFutures with TimeLimitedTests {
       assert(hmm.q("_START_", "_START_", "NN") == 0.3403187908808027)
     }
 
-    it("pi") {
+    it("pi, getTagSequence") {
       val path = getClass.getResource("/corpus2.hmm.json").getFile
       val hmm: HMM = HMMFactory.createFromModel(path)
-
       val words = List("Kamu", "bisa", "tidur", ".")
+
       assert(hmm.pi(-1, words, "", "") == (1.0, List()))
       assert(hmm.pi(0, words, "_START_", "PRP") == (0.016209436718105034, List("PRP")))
       assert(hmm.pi(1, words, "PRP", "MD") == (0.015376391107538656, List("PRP", "MD")))
       assert(hmm.pi(2, words, "MD", "VBI") == (5.77474304288646E-4, List("PRP", "MD", "VBI")))
       assert(hmm.pi(3, words, "VBI", ".") == (3.1033959155440764E-4, List("PRP", "MD", "VBI", ".")))
+
+      assert(hmm.getTagSequence(words) == List("PRP", "MD", "VBI", "."))
     }
   }
 }
