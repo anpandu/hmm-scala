@@ -105,15 +105,18 @@ class HMMTest extends FunSpec with ScalaFutures with TimeLimitedTests {
       val path = getClass.getResource("/corpus2.hmm.json").getFile
       val hmm: HMM = HMMFactory.createFromModel(path)
 
-      val words = hmm.preprocessWords(List("Kamu", "bisa", "tidur", "."))
-      assert(hmm.pi(-1, words, "", "") == (1.0, List()))
-      assert(hmm.pi(0, words, "_START_", "PRP") == (0.08104718359052518, List("PRP")))
-      assert(hmm.pi(1, words, "PRP", "MD") == (0.07688195553769328, List("PRP", "MD")))
-      assert(hmm.pi(2, words, "MD", "VBI") == (0.04042320130020522, List("PRP", "MD", "VBI")))
-      assert(hmm.pi(3, words, "VBI", ".") == (0.021723771408808535, List("PRP", "MD", "VBI", ".")))
+      val prep_words = hmm.preprocessWords(List("Kamu", "bisa", "tidur", "."))
+      assert(hmm.pi(-1, prep_words, "", "") == (1.0, List()))
+      assert(hmm.pi(0, prep_words, "_START_", "PRP") == (0.08104718359052518, List("PRP")))
+      assert(hmm.pi(1, prep_words, "PRP", "MD") == (0.07688195553769328, List("PRP", "MD")))
+      assert(hmm.pi(2, prep_words, "MD", "VBI") == (0.04042320130020522, List("PRP", "MD", "VBI")))
+      assert(hmm.pi(3, prep_words, "VBI", ".") == (0.021723771408808535, List("PRP", "MD", "VBI", ".")))
 
-      val ori_words = List("Kamu", "bisa", "tidur", ".")
-      assert(hmm.getTagSequence(ori_words) == List("PRP", "MD", "VBI", "."))
+      val words = List("Kamu", "bisa", "tidur", ".")
+      assert(hmm.getTagSequence(words) == List("PRP", "MD", "VBI", "."))
+
+      val words2 = List("Spongebob", "bisa", "tidur", ".")
+      assert(hmm.getTagSequence(words2) == List("PRP", "MD", "VBI", "."))
     }
   }
 }
