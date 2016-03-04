@@ -75,15 +75,22 @@ class HMM(val sentences: List[List[List[String]]],
   def getTagSequence(_words: List[String]): List[String] = {
     val words = preprocessWords(_words)
     val n = words.length - 1
-    var candidate_tags: List[(String, String)] = List()
-    tags.foreach((tag2) => {
-      tags.foreach((tag3) => {
-        val score = countBiGramTag(tag2, tag3).toDouble * emission(words(n), tag3)
-        if (score > 0)
-          candidate_tags = candidate_tags :+ (tag2, tag3)
+    var candidate_tags: List[(String, String, Double)] = List()
+    tags.foreach((tag1) => {
+      tags.foreach((tag2) => {
+        tags.foreach((tag3) => {
+          val score = countBiGramTag(tag1, tag2).toDouble * emission(words(n - 1), tag2) * countBiGramTag(tag2, tag3).toDouble * emission(words(n), tag3)
+          if (score > 0)
+            candidate_tags = candidate_tags :+ (tag2, tag3, score)
+        })
       })
     })
-    var result = candidate_tags
+    var candidate_tags2 = candidate_tags
+      .sortBy((tup) => { -tup._3 })
+      .map((tup) => { (tup._1, tup._2) })
+      .distinct
+      .take(5)
+    var result = candidate_tags2
       .map((tup) => { pi(n, words, tup._1, tup._2) })
       .maxBy((tup) => { tup._1 })
       ._2
