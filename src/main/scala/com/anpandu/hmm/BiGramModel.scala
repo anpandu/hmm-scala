@@ -1,9 +1,9 @@
 package com.anpandu.hmm
 
 import play.api.libs.json._
-import scala.collection.mutable.{ Map, SynchronizedMap, HashMap }
+import scala.collection.immutable.{ Map, HashMap }
 
-class BiGramModel(val sentences: List[List[List[String]]], val tags: List[String], val memory: Map[String, Int]) {
+class BiGramModel(val memory: Map[String, Int]) {
 
   def countTag(tag: String, tag2: String): Int = {
     var index = tag + "_" + tag2
@@ -21,7 +21,12 @@ object BiGramModelFactory {
     var sentences = Json.parse(_sentences).as[List[List[List[String]]]]
     var tags = getTags(sentences)
     var memory = getMemory(sentences, tags)
-    new BiGramModel(sentences, tags, memory)
+    new BiGramModel(memory)
+  }
+
+  def createFromJSON(_json: String): BiGramModel = {
+    var memory = Json.parse(_json).as[Map[String, Int]]
+    new BiGramModel(memory)
   }
 
   def getTags(sentences: List[List[List[String]]]): List[String] = {

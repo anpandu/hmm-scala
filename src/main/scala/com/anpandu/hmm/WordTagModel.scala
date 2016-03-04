@@ -1,9 +1,9 @@
 package com.anpandu.hmm
 
 import play.api.libs.json._
-import scala.collection.mutable.{ Map, SynchronizedMap, HashMap }
+import scala.collection.immutable.{ Map, HashMap }
 
-class WordTagModel(val sentences: List[List[List[String]]], val tags: List[String], val memory: Map[String, Int]) {
+class WordTagModel(val memory: Map[String, Int]) {
 
   def countWordTag(word: String, tag: String): Int = {
     var index = word + "_" + tag
@@ -21,7 +21,12 @@ object WordTagModelFactory {
     var sentences = Json.parse(_sentences).as[List[List[List[String]]]]
     var tags = getTags(sentences)
     var memory = getMemory(sentences, tags)
-    new WordTagModel(sentences, tags, memory)
+    new WordTagModel(memory)
+  }
+
+  def createFromJSON(_json: String): WordTagModel = {
+    var memory = Json.parse(_json).as[Map[String, Int]]
+    new WordTagModel(memory)
   }
 
   def getTags(sentences: List[List[List[String]]]): List[String] = {

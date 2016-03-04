@@ -1,9 +1,9 @@
 package com.anpandu.hmm
 
 import play.api.libs.json._
-import scala.collection.mutable.{ Map, SynchronizedMap, HashMap }
+import scala.collection.immutable.{ Map, HashMap }
 
-class TriGramModel(val sentences: List[List[List[String]]], val tags: List[String], val memory: Map[String, Int]) {
+class TriGramModel(val memory: Map[String, Int]) {
 
   def countTag(tag: String, tag2: String, tag3: String): Int = {
     var index = tag + "_" + tag2 + "_" + tag3
@@ -21,7 +21,12 @@ object TriGramModelFactory {
     var sentences = Json.parse(_sentences).as[List[List[List[String]]]]
     var tags = getTags(sentences)
     var memory = getMemory(sentences, tags)
-    new TriGramModel(sentences, tags, memory)
+    new TriGramModel(memory)
+  }
+
+  def createFromJSON(_json: String): TriGramModel = {
+    var memory = Json.parse(_json).as[Map[String, Int]]
+    new TriGramModel(memory)
   }
 
   def getTags(sentences: List[List[List[String]]]): List[String] = {
