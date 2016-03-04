@@ -80,8 +80,8 @@ class HMMTest extends FunSpec with ScalaFutures with TimeLimitedTests {
     }
 
     it("countTag, countWordTag") {
-      val path = getClass.getResource("/corpus2.crp.json").getFile
-      val hmm: HMM = HMMFactory.createFromCorpus(path)
+      val path = getClass.getResource("/corpus2.hmm.json").getFile
+      val hmm: HMM = HMMFactory.createFromModel(path)
       assert(hmm.countUniGramTag("NN") == 35)
       assert(hmm.countBiGramTag("NN", "DT") == 7)
       assert(hmm.countTriGramTag("_START_", "NN", "DT") == 2)
@@ -91,12 +91,24 @@ class HMMTest extends FunSpec with ScalaFutures with TimeLimitedTests {
     }
 
     it("emission, q") {
-      val path = getClass.getResource("/corpus2.crp.json").getFile
-      val hmm: HMM = HMMFactory.createFromCorpus(path)
+      val path = getClass.getResource("/corpus2.hmm.json").getFile
+      val hmm: HMM = HMMFactory.createFromModel(path)
 
-      assert(hmm.emission("di", "IN") == 5 / 7)
+      assert(hmm.emission("di", "IN") == 0.7142857142857143)
       assert(hmm.q("VBI", "IN", "NN") == 0.5692186266771901)
       assert(hmm.q("_START_", "_START_", "NN") == 0.3403187908808027)
+    }
+
+    it("pi") {
+      val path = getClass.getResource("/corpus2.hmm.json").getFile
+      val hmm: HMM = HMMFactory.createFromModel(path)
+
+      val words = List("Kamu", "bisa", "tidur", ".")
+      assert(hmm.pi(-1, words, "", "") == (1.0, List()))
+      assert(hmm.pi(0, words, "_START_", "PRP") == (0.016209436718105034, List("PRP")))
+      assert(hmm.pi(1, words, "PRP", "MD") == (0.015376391107538656, List("PRP", "MD")))
+      assert(hmm.pi(2, words, "MD", "VBI") == (5.77474304288646E-4, List("PRP", "MD", "VBI")))
+      assert(hmm.pi(3, words, "VBI", ".") == (3.1033959155440764E-4, List("PRP", "MD", "VBI", ".")))
     }
   }
 }

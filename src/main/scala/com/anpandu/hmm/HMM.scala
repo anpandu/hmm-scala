@@ -30,8 +30,8 @@ class HMM(val sentences: List[List[List[String]]],
     wordtag.countWordTag(word, tag)
   }
 
-  def emission(word: String, tag: String): Int = {
-    countWordTag(word, tag) / countUniGramTag(tag)
+  def emission(word: String, tag: String): Double = {
+    countWordTag(word, tag).toDouble / countUniGramTag(tag).toDouble
   }
 
   def q(tag1: String, tag2: String, tag3: String): Double = {
@@ -51,6 +51,24 @@ class HMM(val sentences: List[List[List[String]]],
     val c: Double = if (s == 0) 0 else ct3 / s
 
     x * a + y * b + z * c
+  }
+
+  def pi(n: Int, words: List[String], tag1: String, tag2: String): (Double, List[String]) = {
+    if (n == -1)
+      (1.0, List())
+    else {
+      val valid_tags = if (n == 0) "_START_" :: tags else tags
+      val result = valid_tags
+        .map((tag0) => {
+          val score = q(tag0, tag1, tag2) * emission(words(n), tag2)
+          val pi_res = pi(n - 1, words, tag0, tag1)
+          val fin_score = pi_res._1 * score
+          val tag_seq = pi_res._2 :+ tag2
+          (fin_score, tag_seq)
+        })
+        .maxBy(_._1)
+      result
+    }
   }
 
   def export(): String = {
