@@ -1,0 +1,241 @@
+[
+  [
+    ["Dia", "PRP"],
+    ["bangkit", "VBI"],
+    ["dari", "IN"],
+    ["keterpurukan", "NN"],
+    [".", "."]
+  ],
+  [
+    ["Rani", "NNP"],
+    ["dan", "CC"],
+    ["Budi", "NNP"],
+    ["duduk", "VBI"],
+    ["di", "IN"],
+    ["bangku", "NN"],
+    [".", "."]
+  ],
+  [
+    ["Mereka", "PRP"],
+    ["sedang", "RB"],
+    ["bersepeda", "VBI"],
+    [".", "."]
+  ],
+  [
+    ["Nia", "NNP"],
+    ["sudah", "RB"],
+    ["datang", "VBI"],
+    [".", "."]
+  ],
+  [
+    ["Daun", "NN"],
+    ["tanaman", "NN"],
+    ["itu", "DT"],
+    ["gugur", "VBI"],
+    [".", "."]
+  ],
+  [
+    ["Binatang", "NN"],
+    ["itu", "DT"],
+    ["hidup", "VBI"],
+    [".", "."]
+  ],
+  [
+    ["Kapal", "NN"],
+    ["karam", "VBI"],
+    ["di", "IN"],
+    ["pulau", "NN"],
+    ["Bangka", "NNP"],
+    [".", "."]
+  ],
+  [
+    ["Saya", "PRP"],
+    ["menulis", "VBT"],
+    ["surat", "NN"],
+    [".", "."]
+  ],
+  [
+    ["Ibu", "NNP"],
+    ["memberi", "VBT"],
+    ["adik", "NNP"],
+    ["kue", "NN"],
+    [".", "."]
+  ],
+  [
+    ["Adik", "NNP"],
+    ["sedang", "RB"],
+    ["makan", "VBT"],
+    [".", "."]
+  ],
+  [
+    ["Rakyat", "NN"],
+    ["mencintai", "VBT"],
+    ["pemimpinya", "NNG"],
+    ["yang", "SC"],
+    ["jujur", "JJ"],
+    [".", "."]
+  ],
+  [
+    ["Orang", "NN"],
+    ["tua", "JJ"],
+    ["becermin", "VBI"],
+    ["di", "IN"],
+    ["depan", "NN"],
+    ["kaca", "NN"],
+    [".", "."]
+  ],
+  [
+    ["Rumah", "NN"],
+    ["Husein", "NNP"],
+    ["besar", "JJ"],
+    [".", "."]
+  ],
+  [
+    ["Anton", "NNP"],
+    ["murid", "NN"],
+    ["terpandai", "JJ"],
+    ["di", "IN"],
+    ["kelas", "NN"],
+    ["itu", "DT"],
+    [".", "."]
+  ],
+  [
+    ["Karena", "CC"],
+    ["dimanja", "VBT"],
+    [",", ","],
+    ["anak", "NN"],
+    ["itu", "DT"],
+    ["sangat", "RB"],
+    ["nakal", "JJ"],
+    [".", "."]
+  ],
+  [
+    ["Saya", "PRP"],
+    ["terkena", "VBT"],
+    ["bisa", "NN"],
+    ["ular", "NN"],
+    [".", "."]
+  ],
+  [
+    ["Bisa", "NN"],
+    ["ular", "NN"],
+    ["bisa", "MD"],
+    ["membunuh", "VBT"],
+    ["orang", "NN"],
+    [".", "."]
+  ],
+  [
+    ["Kamu", "PRP"],
+    ["bisa", "MD"],
+    ["tidur", "VBI"],
+    [".", "."]
+  ],
+  [
+    ["Burung", "NN"],
+    ["bisa", "MD"],
+    ["terbang", "VBI"],
+    [".", "."]
+  ],
+  [
+    ["Racun", "NN"],
+    ["itu", "DT"],
+    ["dapat", "MD"],
+    ["mematikan", "VBT"],
+    ["beberapa", "CDI"],
+    ["kecoa", "NN"],
+    [".", "."]
+  ],
+  [
+    ["Pejalan", "NN"],
+    ["kaki", "NN"],
+    ["itu", "DT"],
+    ["berasal", "VBI"],
+    ["dari", "IN"],
+    ["(", "OP"],
+    ["kota", "NN"],
+    [")", "CP"],
+    ["Surabaya", "NNP"],
+    [".", "."]
+  ],
+  [
+    ["Persamaan", "NN"],
+    ["kedua", "CDC"],
+    ["proses", "NN"],
+    ["ini", "DT"],
+    ["(", "OP"],
+    ["perbedaannya", "NNG"],
+    ["[", "OP"],
+    ["lihat", "VBT"],
+    ["halaman", "NN"],
+    ["35", "CDP"],
+    ["-", "-"],
+    ["38", "CDP"],
+    ["]", "CP"],
+    ["tidak", "NEG"],
+    ["dibicarakan", "VBT"],
+    [")", "CP"],
+    ["perlu", "RB"],
+    ["dibentangkan", "VBT"],
+    ["di", "IN"],
+    ["sini", "PRL"],
+    [".", "."]
+  ],
+  [
+    ["1910", "CDP"],
+    ["-", "-"],
+    ["1945", "CDP"],
+    [".", "."]
+  ],
+  [
+    ["Jakarta", "NNP"],
+    ["-", "-"],
+    ["Bandung", "NNP"],
+    [".", "."]
+  ],
+  [
+    ["Tanya", "VBT"],
+    ["Basri", "NNP"],
+    [",", ","],
+    ["\"", "\""],
+    ["Kau", "PRP"],
+    ["dengar", "VBT"],
+    ["bunyi", "NN"],
+    ["'", "\""],
+    ["kring-kring", "NN"],
+    ["'", "\""],
+    ["tadi", "RB"],
+    ["?", "."],
+    ["\"", "\""]
+  ],
+  [
+    ["Kalau", "SC"],
+    ["begitu", "VBI"],
+    ["...", "..."],
+    ["ya", "UH"],
+    [",", ","],
+    ["marilah", "UH"],
+    ["kita", "PRP"],
+    ["bergerak", "VBI"],
+    ["!", "."]
+  ],
+  [
+    ["Sang", "RP"],
+    ["raja", "NN"],
+    ["belum", "NEG"],
+    ["bisa", "MD"],
+    ["dihubungi", "VBT"],
+    [".", "."]
+  ],
+  [
+    ["Selanjutnya", "CC"],
+    [",", ","],
+    ["saya", "PRP"],
+    ["akan", "MD"],
+    ["pergi", "VBI"],
+    [".", "."]
+  ],
+  [
+    ["Olahraga", "NN"],
+    [".", "."]
+  ]
+]

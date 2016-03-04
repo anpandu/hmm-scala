@@ -1,9 +1,9 @@
 package com.anpandu.hmm
 
 import play.api.libs.json._
-import scala.collection.mutable.{ Map, SynchronizedMap, HashMap }
+import scala.collection.immutable.{ Map, HashMap }
 
-class UniGramModel(val sentences: List[List[List[String]]], val tags: List[String], val memory: Map[String, Int]) {
+class UniGramModel(val memory: Map[String, Int]) {
 
   def countTag(tag: String): Int = {
     memory getOrElse (tag, 0)
@@ -20,7 +20,12 @@ object UniGramModelFactory {
     var sentences = Json.parse(_sentences).as[List[List[List[String]]]]
     var tags = getTags(sentences)
     var memory = getMemory(sentences, tags)
-    new UniGramModel(sentences, tags, memory)
+    new UniGramModel(memory)
+  }
+
+  def createFromJSON(_json: String): UniGramModel = {
+    var memory = Json.parse(_json).as[Map[String, Int]]
+    new UniGramModel(memory)
   }
 
   def getTags(sentences: List[List[List[String]]]): List[String] = {
@@ -32,14 +37,18 @@ object UniGramModelFactory {
 
   def getMemory(sentences: List[List[List[String]]], tags: List[String]): HashMap[String, Int] = {
     var memory = new HashMap[String, Int]
-    tags.foreach((tag) => { memory += (tag -> countTag(sentences, tag)) })
+    var new_tags = tags :+ "_START_"
+    new_tags.foreach((tag) => { memory += (tag -> countTag(sentences, tag)) })
     memory
   }
 
   def countTag(sentences: List[List[List[String]]], tag: String): Int = {
-    sentences
-      .flatten
-      .filter((token) => { (token(1) == tag) })
-      .length
+    if (tag == "_START_" || tag == "_STOP_")
+      return sentences.length
+    else
+      return sentences
+        .flatten
+        .filter((token) => { (token(1) == tag) })
+        .length
   }
 }
