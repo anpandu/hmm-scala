@@ -3,6 +3,7 @@ package com.anpandu.hmm
 import play.api.libs.json._
 import scala.collection.immutable.{ Map, HashMap }
 import scala.io.Source
+import scala.util.control.Exception._
 
 class HMM(val sentences: List[List[List[String]]],
     val tags: List[String],
@@ -60,16 +61,20 @@ class HMM(val sentences: List[List[List[String]]],
     else {
       var valid_tags = if (n == 0) "_START_" :: tags else tags
       valid_tags = pruneTags(valid_tags, n, tag1, tag2, words)
-      val result = valid_tags
-        .map((tag0) => {
-          val score = q(tag0, tag1, tag2) * emission(words(n), tag2)
-          val pi_res = pi(n - 1, words, tag0, tag1)
-          val fin_score = pi_res._1 * score
-          val tag_seq = pi_res._2 :+ tag2
-          (fin_score, tag_seq)
-        })
-        .maxBy(_._1)
-      result
+      if (valid_tags.isEmpty) {
+        (0.0, List("_xxx_"))
+      } else {
+        val result = valid_tags
+          .map((tag0) => {
+            val score = q(tag0, tag1, tag2) * emission(words(n), tag2)
+            val pi_res = pi(n - 1, words, tag0, tag1)
+            val fin_score = pi_res._1 * score
+            val tag_seq = pi_res._2 :+ tag2
+            (fin_score, tag_seq)
+          })
+          .maxBy(_._1)
+        result
+      }
     }
   }
 
@@ -79,14 +84,19 @@ class HMM(val sentences: List[List[List[String]]],
         val score = q(tag, tag1, tag2) * emission(words(n), tag2)
         (tag, score)
       })
-    val max_score = tup_tag_score
-      .sortBy((tup) => { -tup._2 })
-      .map((tup) => { tup._2 })
-      .take(1)
-    val valid_tags = tup_tag_score
-      .filter((tup) => { max_score.contains(tup._2) })
-      .map((tup) => { tup._1 })
-    valid_tags
+      .filter((tup) => { tup._2 > 0 })
+    if (tup_tag_score.isEmpty) {
+      List()
+    } else {
+      val max_score = tup_tag_score
+        .sortBy((tup) => { -tup._2 })
+        .map((tup) => { tup._2 })
+        .take(1)
+      val valid_tags = tup_tag_score
+        .filter((tup) => { max_score.contains(tup._2) })
+        .map((tup) => { tup._1 })
+      valid_tags
+    }
   }
 
   def getTagSequence(_words: List[String]): List[String] = {
@@ -111,6 +121,8 @@ class HMM(val sentences: List[List[List[String]]],
       .map((tup) => { pi(n, words, tup._1, tup._2) })
       .maxBy((tup) => { tup._1 })
       ._2
+    if (result.length != _words.length)
+      throw NoAnswerException("no tag sequence found")
     result
   }
 
@@ -243,3 +255,5 @@ object HMMFactory {
     }
   }
 }
+
+case class NoAnswerException(message: String) extends Exception(message)
