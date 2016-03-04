@@ -121,23 +121,16 @@
   },
   "wordtag": {
     "._.": 5,
-    "Kamu_PRP": 2,
+    "_lowerCase__NN": 4,
     "bisa_NN": 1,
+    "_lowerCase__VBI": 3,
     "bisa_MD": 4,
-    "tidur_VBI": 1,
-    "orang_NN": 1,
-    "Bisa_NN": 1,
-    "Budi_NNP": 1,
-    "bangku_NN": 1,
-    "Saya_PRP": 1,
-    "Burung_NN": 1,
-    "membunuh_VBT": 1,
-    "dan_CC": 1,
-    "ular_NN": 2,
-    "di_IN": 1,
-    "terkena_VBT": 1,
-    "terbang_VBI": 1,
-    "Rani_NNP": 1,
-    "duduk_VBI": 1
+    "_firstWord__PRP": 3,
+    "_firstWord__NNP": 1,
+    "_lowerCase__VBT": 2,
+    "_initCap__NNP": 1,
+    "_firstWord__NN": 2,
+    "_lowerCase__CC": 1,
+    "_lowerCase__IN": 1
   }
 }

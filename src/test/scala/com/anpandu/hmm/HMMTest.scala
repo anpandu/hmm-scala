@@ -63,7 +63,7 @@ class HMMTest extends FunSpec with ScalaFutures with TimeLimitedTests {
       val ex_dict = Map("bisa" -> 5, "Budi" -> 1, "Saya" -> 1, "di" -> 1, "Bisa" -> 1, "ular" -> 2, "duduk" -> 1, "." -> 5, "tidur" -> 1, "bangku" -> 1, "membunuh" -> 1, "terbang" -> 1, "dan" -> 1, "Burung" -> 1, "orang" -> 1, "Kamu" -> 2, "terkena" -> 1, "Rani" -> 1)
       val ex_new_sentences = List(List(List("_firstWord_", "PRP"), List("_lowerCase_", "VBT"), List("bisa", "NN"), List("_lowerCase_", "NN"), List(".", ".")), List(List("_firstWord_", "NN"), List("_lowerCase_", "NN"), List("bisa", "MD"), List("_lowerCase_", "VBT"), List("_lowerCase_", "NN"), List(".", ".")), List(List("_firstWord_", "PRP"), List("bisa", "MD"), List("_lowerCase_", "VBI"), List(".", ".")), List(List("_firstWord_", "NN"), List("bisa", "MD"), List("_lowerCase_", "VBI"), List(".", ".")), List(List("_firstWord_", "PRP"), List("bisa", "MD")), List(List("_firstWord_", "NNP"), List("_lowerCase_", "CC"), List("_initCap_", "NNP"), List("_lowerCase_", "VBI"), List("_lowerCase_", "IN"), List("_lowerCase_", "NN"), List(".", ".")))
 
-      val ex_export = """{"sentences":[[["_firstWord_","PRP"],["_lowerCase_","VBT"],["bisa","NN"],["_lowerCase_","NN"],[".","."]],[["_firstWord_","NN"],["_lowerCase_","NN"],["bisa","MD"],["_lowerCase_","VBT"],["_lowerCase_","NN"],[".","."]],[["_firstWord_","PRP"],["bisa","MD"],["_lowerCase_","VBI"],[".","."]],[["_firstWord_","NN"],["bisa","MD"],["_lowerCase_","VBI"],[".","."]],[["_firstWord_","PRP"],["bisa","MD"]],[["_firstWord_","NNP"],["_lowerCase_","CC"],["_initCap_","NNP"],["_lowerCase_","VBI"],["_lowerCase_","IN"],["_lowerCase_","NN"],[".","."]]],"tags":["PRP","VBT","NN",".","MD","VBI","NNP","CC","IN"],"dict":{"duduk":1,"tidur":1,"orang":1,"Bisa":1,"ular":2,".":5,"Budi":1,"bisa":5,"dan":1,"terbang":1,"di":1,"Kamu":2,"membunuh":1,"Burung":1,"terkena":1,"Rani":1,"Saya":1,"bangku":1},"unigram":{"IN":1,"PRP":3,".":5,"NN":7,"MD":4,"_START_":6,"CC":1,"VBT":2,"NNP":2,"VBI":3},"bigram":{"CC_NNP":1,"NN_NN":2,"_START__NN":2,"MD_VBI":2,"PRP_MD":2,"VBT_NN":2,"NNP_VBI":1,"_START__NNP":1,"NN_MD":2,"_START___START_":6,"NN_.":3,"VBI_.":2,"VBI_IN":1,"IN_NN":1,"_START__PRP":3,"PRP_VBT":1,"MD_VBT":1,"NNP_CC":1},"trigram":{"_START___START__NNP":1,"NN_MD_VBI":1,"_START___START__PRP":3,"CC_NNP_VBI":1,"NN_NN_.":1,"_START__NN_NN":1,"MD_VBT_NN":1,"_START__PRP_MD":2,"_START__NNP_CC":1,"PRP_VBT_NN":1,"NNP_VBI_IN":1,"VBT_NN_NN":1,"VBI_IN_NN":1,"_START__PRP_VBT":1,"IN_NN_.":1,"MD_VBI_.":2,"_START__NN_MD":1,"NN_NN_MD":1,"PRP_MD_VBI":1,"_START___START__NN":2,"NN_MD_VBT":1,"VBT_NN_.":1,"NNP_CC_NNP":1},"wordtag":{"._.":5,"Kamu_PRP":2,"bisa_NN":1,"bisa_MD":4,"tidur_VBI":1,"orang_NN":1,"Bisa_NN":1,"Budi_NNP":1,"bangku_NN":1,"Saya_PRP":1,"Burung_NN":1,"membunuh_VBT":1,"dan_CC":1,"ular_NN":2,"di_IN":1,"terkena_VBT":1,"terbang_VBI":1,"Rani_NNP":1,"duduk_VBI":1}}"""
+      val ex_export = """{"sentences":[[["_firstWord_","PRP"],["_lowerCase_","VBT"],["bisa","NN"],["_lowerCase_","NN"],[".","."]],[["_firstWord_","NN"],["_lowerCase_","NN"],["bisa","MD"],["_lowerCase_","VBT"],["_lowerCase_","NN"],[".","."]],[["_firstWord_","PRP"],["bisa","MD"],["_lowerCase_","VBI"],[".","."]],[["_firstWord_","NN"],["bisa","MD"],["_lowerCase_","VBI"],[".","."]],[["_firstWord_","PRP"],["bisa","MD"]],[["_firstWord_","NNP"],["_lowerCase_","CC"],["_initCap_","NNP"],["_lowerCase_","VBI"],["_lowerCase_","IN"],["_lowerCase_","NN"],[".","."]]],"tags":["PRP","VBT","NN",".","MD","VBI","NNP","CC","IN"],"dict":{"duduk":1,"tidur":1,"orang":1,"Bisa":1,"ular":2,".":5,"Budi":1,"bisa":5,"dan":1,"terbang":1,"di":1,"Kamu":2,"membunuh":1,"Burung":1,"terkena":1,"Rani":1,"Saya":1,"bangku":1},"unigram":{"IN":1,"PRP":3,".":5,"NN":7,"MD":4,"_START_":6,"CC":1,"VBT":2,"NNP":2,"VBI":3},"bigram":{"CC_NNP":1,"NN_NN":2,"_START__NN":2,"MD_VBI":2,"PRP_MD":2,"VBT_NN":2,"NNP_VBI":1,"_START__NNP":1,"NN_MD":2,"_START___START_":6,"NN_.":3,"VBI_.":2,"VBI_IN":1,"IN_NN":1,"_START__PRP":3,"PRP_VBT":1,"MD_VBT":1,"NNP_CC":1},"trigram":{"_START___START__NNP":1,"NN_MD_VBI":1,"_START___START__PRP":3,"CC_NNP_VBI":1,"NN_NN_.":1,"_START__NN_NN":1,"MD_VBT_NN":1,"_START__PRP_MD":2,"_START__NNP_CC":1,"PRP_VBT_NN":1,"NNP_VBI_IN":1,"VBT_NN_NN":1,"VBI_IN_NN":1,"_START__PRP_VBT":1,"IN_NN_.":1,"MD_VBI_.":2,"_START__NN_MD":1,"NN_NN_MD":1,"PRP_MD_VBI":1,"_START___START__NN":2,"NN_MD_VBT":1,"VBT_NN_.":1,"NNP_CC_NNP":1},"wordtag":{"._.":5,"_lowerCase__NN":4,"bisa_NN":1,"_lowerCase__VBI":3,"bisa_MD":4,"_firstWord__PRP":3,"_firstWord__NNP":1,"_lowerCase__VBT":2,"_initCap__NNP":1,"_firstWord__NN":2,"_lowerCase__CC":1,"_lowerCase__IN":1}}"""
       val path = getClass.getResource("/corpus.crp.json").getFile
       val hmm: HMM = HMMFactory.createFromCorpus(path)
       assert(hmm.export == ex_export)
@@ -102,15 +102,16 @@ class HMMTest extends FunSpec with ScalaFutures with TimeLimitedTests {
     it("pi, getTagSequence") {
       val path = getClass.getResource("/corpus2.hmm.json").getFile
       val hmm: HMM = HMMFactory.createFromModel(path)
-      val words = List("Kamu", "bisa", "tidur", ".")
 
+      val words = HMMFactory.preprocessWords(List("Kamu", "bisa", "tidur", "."), hmm.dict)
       assert(hmm.pi(-1, words, "", "") == (1.0, List()))
-      assert(hmm.pi(0, words, "_START_", "PRP") == (0.016209436718105034, List("PRP")))
-      assert(hmm.pi(1, words, "PRP", "MD") == (0.015376391107538656, List("PRP", "MD")))
-      assert(hmm.pi(2, words, "MD", "VBI") == (5.77474304288646E-4, List("PRP", "MD", "VBI")))
-      assert(hmm.pi(3, words, "VBI", ".") == (3.1033959155440764E-4, List("PRP", "MD", "VBI", ".")))
+      assert(hmm.pi(0, words, "_START_", "PRP") == (0.08104718359052518, List("PRP")))
+      assert(hmm.pi(1, words, "PRP", "MD") == (0.07688195553769328, List("PRP", "MD")))
+      assert(hmm.pi(2, words, "MD", "VBI") == (0.04042320130020522, List("PRP", "MD", "VBI")))
+      assert(hmm.pi(3, words, "VBI", ".") == (0.021723771408808535, List("PRP", "MD", "VBI", ".")))
 
-      assert(hmm.getTagSequence(words) == List("PRP", "MD", "VBI", "."))
+      val ori_words = List("Kamu", "bisa", "tidur", ".")
+      assert(hmm.getTagSequence(ori_words) == List("PRP", "MD", "VBI", "."))
     }
   }
 }

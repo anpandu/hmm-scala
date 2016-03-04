@@ -72,8 +72,7 @@ class HMM(val sentences: List[List[List[String]]],
   }
 
   def getTagSequence(_words: List[String]): List[String] = {
-    // val words = HMMFactory.preprocessWords(_words, dict)
-    val words = _words
+    val words = HMMFactory.preprocessWords(_words, dict)
     val n = words.length - 1
     var candidate_tags: List[(String, String)] = List()
     tags.foreach((tag2) => {
@@ -137,7 +136,7 @@ object HMMFactory {
     var unigram = UniGramModelFactory.create(_sentences)
     var bigram = BiGramModelFactory.create(_sentences)
     var trigram = TriGramModelFactory.create(_sentences)
-    var wordtag = WordTagModelFactory.create(_sentences)
+    var wordtag = WordTagModelFactory.create(Json.stringify(Json.toJson(sentences)))
     new HMM(sentences, tags, dict, unigram, bigram, trigram, wordtag)
   }
 
