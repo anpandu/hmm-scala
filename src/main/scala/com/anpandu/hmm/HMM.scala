@@ -58,7 +58,8 @@ class HMM(val sentences: List[List[List[String]]],
     if (n == -1)
       (1.0, List())
     else {
-      val valid_tags = if (n == 0) "_START_" :: tags else tags
+      var valid_tags = if (n == 0) "_START_" :: tags else tags
+      valid_tags = pruneTags(valid_tags, n, tag1, tag2, words)
       val result = valid_tags
         .map((tag0) => {
           val score = q(tag0, tag1, tag2) * emission(words(n), tag2)
@@ -70,6 +71,22 @@ class HMM(val sentences: List[List[List[String]]],
         .maxBy(_._1)
       result
     }
+  }
+
+  def pruneTags(_tags: List[String], n: Int, tag1: String, tag2: String, words: List[String]): List[String] = {
+    val tup_tag_score = _tags
+      .map((tag) => {
+        val score = q(tag, tag1, tag2) * emission(words(n), tag2)
+        (tag, score)
+      })
+    val max_score = tup_tag_score
+      .sortBy((tup) => { -tup._2 })
+      .map((tup) => { tup._2 })
+      .take(1)
+    val valid_tags = tup_tag_score
+      .filter((tup) => { max_score.contains(tup._2) })
+      .map((tup) => { tup._1 })
+    valid_tags
   }
 
   def getTagSequence(_words: List[String]): List[String] = {

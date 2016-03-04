@@ -115,8 +115,8 @@ class HMMTest extends FunSpec with ScalaFutures with TimeLimitedTests {
       val words = List("Kamu", "bisa", "tidur", ".")
       assert(hmm.getTagSequence(words) == List("PRP", "MD", "VBI", "."))
 
-      // val words2 = List("Spongebob", "bisa", "tidur", ".")
-      // assert(hmm.getTagSequence(words2) == List("PRP", "MD", "VBI", "."))
+      val words2 = List("Spongebob", "bisa", "tidur", ".")
+      assert(hmm.getTagSequence(words2) == List("PRP", "MD", "VBI", "."))
     }
   }
 }
