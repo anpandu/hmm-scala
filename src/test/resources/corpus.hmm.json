@@ -62,6 +62,7 @@
     "Saya": 1,
     "bangku": 1
   },
+  "threshold": 5,
   "unigram": {
     "IN": 1,
     "PRP": 3,

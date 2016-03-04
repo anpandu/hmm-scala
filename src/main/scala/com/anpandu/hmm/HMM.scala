@@ -7,6 +7,7 @@ import scala.io.Source
 class HMM(val sentences: List[List[List[String]]],
     val tags: List[String],
     val dict: Map[String, Int],
+    val threshold: Int,
     val unigram: UniGramModel,
     val bigram: BiGramModel,
     val trigram: TriGramModel,
@@ -72,7 +73,7 @@ class HMM(val sentences: List[List[List[String]]],
   }
 
   def getTagSequence(_words: List[String]): List[String] = {
-    val words = HMMFactory.preprocessWords(_words, dict)
+    val words = preprocessWords(_words)
     val n = words.length - 1
     var candidate_tags: List[(String, String)] = List()
     tags.foreach((tag2) => {
@@ -89,11 +90,23 @@ class HMM(val sentences: List[List[List[String]]],
     result
   }
 
+  def preprocessWords(_words: List[String]): List[String] = {
+    val words = _words
+      .zipWithIndex
+      .map((e) => {
+        val (word, idx) = e
+        val result = if (dict(word) < threshold) HMMFactory.transformWord(word, idx) else word
+        result
+      })
+    words
+  }
+
   def export(): String = {
     val json: JsValue = JsObject(Seq(
       "sentences" -> Json.toJson(sentences),
       "tags" -> Json.toJson(tags),
       "dict" -> Json.toJson(dict.toMap),
+      "threshold" -> Json.toJson(threshold),
       "unigram" -> Json.toJson(unigram.memory.toMap),
       "bigram" -> Json.toJson(bigram.memory.toMap),
       "trigram" -> Json.toJson(trigram.memory.toMap),
@@ -115,11 +128,12 @@ object HMMFactory {
     var dict = (json \ "dict").as[Map[String, Int]]
     var sentences = (json \ "sentences").as[List[List[List[String]]]]
     var tags = (json \ "tags").as[List[String]]
+    var threshold = (json \ "threshold").as[Int]
     var unigram = UniGramModelFactory.createFromJSON(Json.stringify((json \ "unigram")))
     var bigram = BiGramModelFactory.createFromJSON(Json.stringify((json \ "bigram")))
     var trigram = TriGramModelFactory.createFromJSON(Json.stringify((json \ "trigram")))
     var wordtag = WordTagModelFactory.createFromJSON(Json.stringify((json \ "wordtag")))
-    new HMM(sentences, tags, dict, unigram, bigram, trigram, wordtag)
+    new HMM(sentences, tags, dict, threshold, unigram, bigram, trigram, wordtag)
   }
 
   def createFromCorpus(_path: String, _threshold: Int = 5) = {
@@ -137,7 +151,7 @@ object HMMFactory {
     var bigram = BiGramModelFactory.create(_sentences)
     var trigram = TriGramModelFactory.create(_sentences)
     var wordtag = WordTagModelFactory.create(Json.stringify(Json.toJson(sentences)))
-    new HMM(sentences, tags, dict, unigram, bigram, trigram, wordtag)
+    new HMM(sentences, tags, dict, _threshold, unigram, bigram, trigram, wordtag)
   }
 
   def getDict(_sentences: String): Map[String, Int] = {
@@ -203,16 +217,5 @@ object HMMFactory {
         })
       answer
     }
-  }
-
-  def preprocessWords(_words: List[String], _dict: Map[String, Int], _threshold: Int = 5): List[String] = {
-    val words = _words
-      .zipWithIndex
-      .map((e) => {
-        val (word, idx) = e
-        val result = if (_dict(word) < _threshold) transformWord(word, idx) else word
-        result
-      })
-    words
   }
 }

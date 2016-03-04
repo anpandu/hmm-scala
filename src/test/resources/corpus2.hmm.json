@@ -372,6 +372,7 @@
     "anak": 1,
     "dari": 2
   },
+  "threshold": 5,
   "unigram": {
     "IN": 7,
     "RP": 1,
