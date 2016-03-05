@@ -56,24 +56,26 @@ class HMM(val sentences: List[List[List[String]]],
   }
 
   def pi(n: Int, words: List[String], tag1: String, tag2: String): (Double, List[String]) = {
-    if (n == -1)
-      (1.0, List())
-    else {
-      var valid_tags = if (n == 0) "_START_" :: tags else tags
-      valid_tags = pruneTags(valid_tags, n, tag1, tag2, words)
-      if (valid_tags.isEmpty) {
-        (0.0, List("_xxx_"))
-      } else {
-        val result = valid_tags
-          .map((tag0) => {
-            val score = q(tag0, tag1, tag2) * emission(words(n), tag2)
-            val pi_res = pi(n - 1, words, tag0, tag1)
-            val fin_score = pi_res._1 * score
-            val tag_seq = pi_res._2 :+ tag2
-            (fin_score, tag_seq)
-          })
-          .maxBy(_._1)
-        result
+    n match {
+      case -1 => (1.0, List())
+      case _ => {
+        var valid_tags = if (n == 0) "_START_" :: tags else tags
+        valid_tags = pruneTags(valid_tags, n, tag1, tag2, words)
+        valid_tags.length match {
+          case 0 => (0.0, List("_xxx_"))
+          case _ => {
+            val result: (Double, List[String]) = valid_tags
+              .map((tag0) => {
+                val score = q(tag0, tag1, tag2) * emission(words(n), tag2)
+                val pi_res = pi(n - 1, words, tag0, tag1)
+                val fin_score = pi_res._1 * score
+                val tag_seq = pi_res._2 :+ tag2
+                (fin_score, tag_seq)
+              })
+              .maxBy(_._1)
+            result
+          }
+        }
       }
     }
   }
@@ -85,17 +87,18 @@ class HMM(val sentences: List[List[List[String]]],
         (tag, score)
       })
       .filter((tup) => { tup._2 > 0 })
-    if (tup_tag_score.isEmpty) {
-      List()
-    } else {
-      val max_score = tup_tag_score
-        .sortBy((tup) => { -tup._2 })
-        .map((tup) => { tup._2 })
-        .take(1)
-      val valid_tags = tup_tag_score
-        .filter((tup) => { max_score.contains(tup._2) })
-        .map((tup) => { tup._1 })
-      valid_tags
+    tup_tag_score.length match {
+      case 0 => List()
+      case _ => {
+        val max_score = tup_tag_score
+          .sortBy((tup) => { -tup._2 })
+          .map((tup) => { tup._2 })
+          .take(1)
+        val valid_tags = tup_tag_score
+          .filter((tup) => { max_score.contains(tup._2) })
+          .map((tup) => { tup._1 })
+        valid_tags
+      }
     }
   }
 
