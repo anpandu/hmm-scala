@@ -1,8 +1,10 @@
 package com.anpandu.hmm
 
+import com.anpandu.hmm.word._
 import play.api.libs.json._
 import scala.collection.immutable.{ Map, HashMap }
 import scala.io.Source
+import scala.util.control.Exception._
 
 class HMM(val sentences: List[List[List[String]]],
     val tags: List[String],
@@ -16,19 +18,19 @@ class HMM(val sentences: List[List[List[String]]],
   val sentences_length = sentences.flatten.length.toDouble
 
   def countUniGramTag(tag: String): Int = {
-    unigram.countTag(tag)
+    unigram.count(tag)
   }
 
   def countBiGramTag(tag: String, tag2: String): Int = {
-    bigram.countTag(tag, tag2)
+    bigram.count(tag, tag2)
   }
 
   def countTriGramTag(tag: String, tag2: String, tag3: String): Int = {
-    trigram.countTag(tag, tag2, tag3)
+    trigram.count(tag, tag2, tag3)
   }
 
   def countWordTag(word: String, tag: String): Int = {
-    wordtag.countWordTag(word, tag)
+    wordtag.count(word, tag)
   }
 
   def emission(word: String, tag: String): Double = {
@@ -55,38 +57,76 @@ class HMM(val sentences: List[List[List[String]]],
   }
 
   def pi(n: Int, words: List[String], tag1: String, tag2: String): (Double, List[String]) = {
-    if (n == -1)
-      (1.0, List())
-    else {
-      val valid_tags = if (n == 0) "_START_" :: tags else tags
-      val result = valid_tags
-        .map((tag0) => {
-          val score = q(tag0, tag1, tag2) * emission(words(n), tag2)
-          val pi_res = pi(n - 1, words, tag0, tag1)
-          val fin_score = pi_res._1 * score
-          val tag_seq = pi_res._2 :+ tag2
-          (fin_score, tag_seq)
-        })
-        .maxBy(_._1)
-      result
+    n match {
+      case -1 => (1.0, List())
+      case _ => {
+        var valid_tags = if (n == 0) "_START_" :: tags else tags
+        valid_tags = pruneTags(valid_tags, n, tag1, tag2, words)
+        valid_tags.length match {
+          case 0 => (0.0, List("_xxx_"))
+          case _ => {
+            val result: (Double, List[String]) = valid_tags
+              .map((tag0) => {
+                val score = q(tag0, tag1, tag2) * emission(words(n), tag2)
+                val pi_res = pi(n - 1, words, tag0, tag1)
+                val fin_score = pi_res._1 * score
+                val tag_seq = pi_res._2 :+ tag2
+                (fin_score, tag_seq)
+              })
+              .maxBy(_._1)
+            result
+          }
+        }
+      }
+    }
+  }
+
+  def pruneTags(_tags: List[String], n: Int, tag1: String, tag2: String, words: List[String]): List[String] = {
+    val tup_tag_score = _tags
+      .map((tag) => {
+        val score = q(tag, tag1, tag2) * emission(words(n), tag2)
+        (tag, score)
+      })
+      .filter((tup) => { tup._2 > 0 })
+    tup_tag_score.length match {
+      case 0 => List()
+      case _ => {
+        val max_score = tup_tag_score
+          .sortBy((tup) => { -tup._2 })
+          .map((tup) => { tup._2 })
+          .take(1)
+        val valid_tags = tup_tag_score
+          .filter((tup) => { max_score.contains(tup._2) })
+          .map((tup) => { tup._1 })
+        valid_tags
+      }
     }
   }
 
   def getTagSequence(_words: List[String]): List[String] = {
     val words = preprocessWords(_words)
     val n = words.length - 1
-    var candidate_tags: List[(String, String)] = List()
-    tags.foreach((tag2) => {
-      tags.foreach((tag3) => {
-        val score = countBiGramTag(tag2, tag3).toDouble * emission(words(n), tag3)
-        if (score > 0)
-          candidate_tags = candidate_tags :+ (tag2, tag3)
+    var candidate_tags: List[(String, String, Double)] = List()
+    tags.foreach((tag1) => {
+      tags.foreach((tag2) => {
+        tags.foreach((tag3) => {
+          val score = countBiGramTag(tag1, tag2).toDouble * emission(words(n - 1), tag2) * countBiGramTag(tag2, tag3).toDouble * emission(words(n), tag3)
+          if (score > 0)
+            candidate_tags = candidate_tags :+ (tag2, tag3, score)
+        })
       })
     })
-    var result = candidate_tags
+    var candidate_tags2 = candidate_tags
+      .sortBy((tup) => { -tup._3 })
+      .map((tup) => { (tup._1, tup._2) })
+      .distinct
+      .take(5)
+    var result = candidate_tags2
       .map((tup) => { pi(n, words, tup._1, tup._2) })
       .maxBy((tup) => { tup._1 })
       ._2
+    if (result.length != _words.length)
+      throw NoAnswerException("no tag sequence found")
     result
   }
 
@@ -95,7 +135,7 @@ class HMM(val sentences: List[List[List[String]]],
       .zipWithIndex
       .map((e) => {
         val (word, idx) = e
-        val result = if ((dict getOrElse (word, -1)) < threshold) HMMFactory.transformWord(word, idx) else word
+        val result = if ((dict getOrElse (word, -1)) < threshold) HMM.transformWord(word, idx) else word
         result
       })
     words
@@ -117,7 +157,7 @@ class HMM(val sentences: List[List[List[String]]],
 
 }
 
-object HMMFactory {
+object HMM {
 
   def createFromModel(_path: String) = {
     val source = Source.fromFile(_path)
@@ -129,10 +169,10 @@ object HMMFactory {
     var sentences = (json \ "sentences").as[List[List[List[String]]]]
     var tags = (json \ "tags").as[List[String]]
     var threshold = (json \ "threshold").as[Int]
-    var unigram = UniGramModelFactory.createFromJSON(Json.stringify((json \ "unigram")))
-    var bigram = BiGramModelFactory.createFromJSON(Json.stringify((json \ "bigram")))
-    var trigram = TriGramModelFactory.createFromJSON(Json.stringify((json \ "trigram")))
-    var wordtag = WordTagModelFactory.createFromJSON(Json.stringify((json \ "wordtag")))
+    var unigram = UniGramModel.createFromJSON(Json.stringify((json \ "unigram")))
+    var bigram = BiGramModel.createFromJSON(Json.stringify((json \ "bigram")))
+    var trigram = TriGramModel.createFromJSON(Json.stringify((json \ "trigram")))
+    var wordtag = WordTagModel.createFromJSON(Json.stringify((json \ "wordtag")))
     new HMM(sentences, tags, dict, threshold, unigram, bigram, trigram, wordtag)
   }
 
@@ -147,10 +187,10 @@ object HMMFactory {
     var dict = getDict(_sentences)
     var sentences = getSentences(_sentences, dict, _threshold)
     var tags = getTags(sentences)
-    var unigram = UniGramModelFactory.create(_sentences)
-    var bigram = BiGramModelFactory.create(_sentences)
-    var trigram = TriGramModelFactory.create(_sentences)
-    var wordtag = WordTagModelFactory.create(Json.stringify(Json.toJson(sentences)))
+    var unigram = UniGramModel.create(_sentences)
+    var bigram = BiGramModel.create(_sentences)
+    var trigram = TriGramModel.create(_sentences)
+    var wordtag = WordTagModel.create(Json.stringify(Json.toJson(sentences)))
     new HMM(sentences, tags, dict, _threshold, unigram, bigram, trigram, wordtag)
   }
 
@@ -219,3 +259,5 @@ object HMMFactory {
     }
   }
 }
+
+case class NoAnswerException(message: String) extends Exception(message)

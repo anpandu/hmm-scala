@@ -1,21 +1,17 @@
-package com.anpandu.hmm
+package com.anpandu.hmm.word
 
 import play.api.libs.json._
 import scala.collection.immutable.{ Map, HashMap }
 
-class WordTagModel(val memory: Map[String, Int]) {
+class WordTagModel(override val memory: Map[String, Int]) extends Memory(memory) {
 
-  def countWordTag(word: String, tag: String): Int = {
-    var index = word + "_" + tag
-    memory getOrElse (index, 0)
-  }
-
-  def toJSON(): String = {
-    Json.stringify(Json.toJson(memory.toMap))
+  def count(word: String, tag: String): Int = {
+    val index = word + "_" + tag
+    get(index)
   }
 }
 
-object WordTagModelFactory {
+object WordTagModel {
 
   def create(_sentences: String): WordTagModel = {
     var sentences = Json.parse(_sentences).as[List[List[List[String]]]]
@@ -47,7 +43,7 @@ object WordTagModelFactory {
     words.foreach((word) => {
       tags.foreach((tag) => {
         val index = word + "_" + tag
-        val cwt = countWordTag(sentences, word, tag)
+        val cwt = count(sentences, word, tag)
         if (cwt > 0)
           memory += (index -> cwt)
       })
@@ -55,7 +51,7 @@ object WordTagModelFactory {
     memory
   }
 
-  def countWordTag(sentences: List[List[List[String]]], word: String, tag: String): Int = {
+  def count(sentences: List[List[List[String]]], word: String, tag: String): Int = {
     sentences
       .flatten
       .filter((token) => { (token(0) == word && token(1) == tag) })

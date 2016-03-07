@@ -1,20 +1,17 @@
-package com.anpandu.hmm
+package com.anpandu.hmm.word
 
 import play.api.libs.json._
 import scala.collection.immutable.{ Map, HashMap }
 
-class UniGramModel(val memory: Map[String, Int]) {
+class UniGramModel(override val memory: Map[String, Int]) extends Memory(memory) {
 
-  def countTag(tag: String): Int = {
-    memory getOrElse (tag, 0)
-  }
-
-  def toJSON(): String = {
-    Json.stringify(Json.toJson(memory.toMap))
+  def count(tag: String): Int = {
+    val index = tag
+    get(index)
   }
 }
 
-object UniGramModelFactory {
+object UniGramModel {
 
   def create(_sentences: String): UniGramModel = {
     var sentences = Json.parse(_sentences).as[List[List[List[String]]]]
@@ -38,11 +35,11 @@ object UniGramModelFactory {
   def getMemory(sentences: List[List[List[String]]], tags: List[String]): HashMap[String, Int] = {
     var memory = new HashMap[String, Int]
     var new_tags = tags :+ "_START_"
-    new_tags.foreach((tag) => { memory += (tag -> countTag(sentences, tag)) })
+    new_tags.foreach((tag) => { memory += (tag -> count(sentences, tag)) })
     memory
   }
 
-  def countTag(sentences: List[List[List[String]]], tag: String): Int = {
+  def count(sentences: List[List[List[String]]], tag: String): Int = {
     if (tag == "_START_" || tag == "_STOP_")
       return sentences.length
     else
