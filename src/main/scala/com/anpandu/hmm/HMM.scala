@@ -134,7 +134,7 @@ class HMM(val sentences: List[List[List[String]]],
       .zipWithIndex
       .map((e) => {
         val (word, idx) = e
-        val result = if ((dict getOrElse (word, -1)) < threshold) HMMFactory.transformWord(word, idx) else word
+        val result = if ((dict getOrElse (word, -1)) < threshold) HMM.transformWord(word, idx) else word
         result
       })
     words
@@ -156,7 +156,7 @@ class HMM(val sentences: List[List[List[String]]],
 
 }
 
-object HMMFactory {
+object HMM {
 
   def createFromModel(_path: String) = {
     val source = Source.fromFile(_path)
