@@ -130,6 +130,8 @@ class HMM(val sentences: List[List[List[String]]],
         })
       })
     })
+    if (candidate_tags.isEmpty)
+      throw NoAnswerException("no candidate tags found")
     val best_tags = candidate_tags
       .sortBy((tup) => { -tup._3 })
       .map((tup) => { (tup._1, tup._2) })
