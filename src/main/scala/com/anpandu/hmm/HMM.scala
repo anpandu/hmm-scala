@@ -84,7 +84,21 @@ class HMM(val sentences: List[List[List[String]]],
   def pruneTags(_tags: List[String], n: Int, tag1: String, tag2: String, words: List[String]): List[String] = {
     val tup_tag_score = _tags
       .map((tag) => {
-        val score = q(tag, tag1, tag2) * emission(words(n), tag2)
+        val prev_score = n match {
+          case x if x < 1 => 1
+          case _ => tags
+            .map((tag_p1) => {
+              val prev_prev_score = n match {
+                case x if x < 2 => 1
+                case _ => tags
+                  .map((tag_p2) => { q(tag_p2, tag_p1, tag) * emission(words(n - 2), tag) })
+                  .max
+              }
+              q(tag_p1, tag, tag1) * emission(words(n - 1), tag1) * prev_prev_score
+            })
+            .max
+        }
+        val score = q(tag, tag1, tag2) * emission(words(n), tag2) * prev_score
         (tag, score)
       })
       .filter((tup) => { tup._2 > 0 })
@@ -116,16 +130,19 @@ class HMM(val sentences: List[List[List[String]]],
         })
       })
     })
-    var candidate_tags2 = candidate_tags
+    if (candidate_tags.isEmpty)
+      throw NoAnswerException("no candidate tags found")
+    val best_tags = candidate_tags
       .sortBy((tup) => { -tup._3 })
       .map((tup) => { (tup._1, tup._2) })
       .distinct
       .take(5)
-    var result = candidate_tags2
+    val candidate_result = best_tags
       .map((tup) => { pi(n, words, tup._1, tup._2) })
+    val result = candidate_result
       .maxBy((tup) => { tup._1 })
       ._2
-    if (result.length != _words.length)
+    if (result.contains("_xxx_"))
       throw NoAnswerException("no tag sequence found")
     result
   }
