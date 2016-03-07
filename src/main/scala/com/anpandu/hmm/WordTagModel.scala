@@ -15,7 +15,7 @@ class WordTagModel(val memory: Map[String, Int]) {
   }
 }
 
-object WordTagModelFactory {
+object WordTagModel {
 
   def create(_sentences: String): WordTagModel = {
     var sentences = Json.parse(_sentences).as[List[List[List[String]]]]

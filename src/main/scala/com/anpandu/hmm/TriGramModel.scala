@@ -15,7 +15,7 @@ class TriGramModel(val memory: Map[String, Int]) {
   }
 }
 
-object TriGramModelFactory {
+object TriGramModel {
 
   def create(_sentences: String): TriGramModel = {
     var sentences = Json.parse(_sentences).as[List[List[List[String]]]]

@@ -15,7 +15,7 @@ class BiGramModel(val memory: Map[String, Int]) {
   }
 }
 
-object BiGramModelFactory {
+object BiGramModel {
 
   def create(_sentences: String): BiGramModel = {
     var sentences = Json.parse(_sentences).as[List[List[List[String]]]]

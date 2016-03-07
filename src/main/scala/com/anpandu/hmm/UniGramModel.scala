@@ -14,7 +14,7 @@ class UniGramModel(val memory: Map[String, Int]) {
   }
 }
 
-object UniGramModelFactory {
+object UniGramModel {
 
   def create(_sentences: String): UniGramModel = {
     var sentences = Json.parse(_sentences).as[List[List[List[String]]]]

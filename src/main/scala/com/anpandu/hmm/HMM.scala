@@ -168,10 +168,10 @@ object HMM {
     var sentences = (json \ "sentences").as[List[List[List[String]]]]
     var tags = (json \ "tags").as[List[String]]
     var threshold = (json \ "threshold").as[Int]
-    var unigram = UniGramModelFactory.createFromJSON(Json.stringify((json \ "unigram")))
-    var bigram = BiGramModelFactory.createFromJSON(Json.stringify((json \ "bigram")))
-    var trigram = TriGramModelFactory.createFromJSON(Json.stringify((json \ "trigram")))
-    var wordtag = WordTagModelFactory.createFromJSON(Json.stringify((json \ "wordtag")))
+    var unigram = UniGramModel.createFromJSON(Json.stringify((json \ "unigram")))
+    var bigram = BiGramModel.createFromJSON(Json.stringify((json \ "bigram")))
+    var trigram = TriGramModel.createFromJSON(Json.stringify((json \ "trigram")))
+    var wordtag = WordTagModel.createFromJSON(Json.stringify((json \ "wordtag")))
     new HMM(sentences, tags, dict, threshold, unigram, bigram, trigram, wordtag)
   }
 
@@ -186,10 +186,10 @@ object HMM {
     var dict = getDict(_sentences)
     var sentences = getSentences(_sentences, dict, _threshold)
     var tags = getTags(sentences)
-    var unigram = UniGramModelFactory.create(_sentences)
-    var bigram = BiGramModelFactory.create(_sentences)
-    var trigram = TriGramModelFactory.create(_sentences)
-    var wordtag = WordTagModelFactory.create(Json.stringify(Json.toJson(sentences)))
+    var unigram = UniGramModel.create(_sentences)
+    var bigram = BiGramModel.create(_sentences)
+    var trigram = TriGramModel.create(_sentences)
+    var wordtag = WordTagModel.create(Json.stringify(Json.toJson(sentences)))
     new HMM(sentences, tags, dict, _threshold, unigram, bigram, trigram, wordtag)
   }
 
