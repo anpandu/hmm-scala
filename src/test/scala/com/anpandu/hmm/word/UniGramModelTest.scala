@@ -34,11 +34,11 @@ class UniGramModelTest extends FunSpec with ScalaFutures with TimeLimitedTests {
       assert(unigram2.toJSON() == ex_memory_json)
     }
 
-    it("countTag") {
+    it("count") {
       val ex_sentences = """[[["Saya","PRP"],["terkena","VBT"],["bisa","NN"],["ular","NN"],[".","."]],[["Bisa","NN"],["ular","NN"],["bisa","MD"],["membunuh","VBT"],["orang","NN"],[".","."]],[["Kamu","PRP"],["bisa","MD"],["tidur","VBI"],[".","."]],[["Burung","NN"],["bisa","MD"],["terbang","VBI"],[".","."]],[["Kamu","PRP"],["bisa","MD"]],[["Rani","NNP"],["dan","CC"],["Budi","NNP"],["duduk","VBI"],["di","IN"],["bangku","NN"],[".","."]]]"""
       val unigram: UniGramModel = UniGramModel.create(ex_sentences)
-      assert(unigram.countTag("NN") == 7)
-      assert(unigram.countTag("WRONGXXX") == 0)
+      assert(unigram.count("NN") == 7)
+      assert(unigram.count("WRONGXXX") == 0)
     }
   }
 }

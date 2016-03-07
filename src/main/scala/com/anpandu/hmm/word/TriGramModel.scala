@@ -3,15 +3,11 @@ package com.anpandu.hmm.word
 import play.api.libs.json._
 import scala.collection.immutable.{ Map, HashMap }
 
-class TriGramModel(val memory: Map[String, Int]) {
+class TriGramModel(override val memory: Map[String, Int]) extends Memory(memory) {
 
-  def countTag(tag: String, tag2: String, tag3: String): Int = {
-    var index = tag + "_" + tag2 + "_" + tag3
-    memory getOrElse (index, 0)
-  }
-
-  def toJSON(): String = {
-    Json.stringify(Json.toJson(memory.toMap))
+  def count(tag: String, tag2: String, tag3: String): Int = {
+    val index = tag + "_" + tag2 + "_" + tag3
+    get(index)
   }
 }
 
@@ -43,7 +39,7 @@ object TriGramModel {
       new_tags.foreach((tag2) => {
         new_tags.foreach((tag3) => {
           var index = tag + "_" + tag2 + "_" + tag3
-          var ct = countTag(sentences, tag, tag2, tag3)
+          var ct = count(sentences, tag, tag2, tag3)
           if (ct > 0)
             memory += (index -> ct)
         })
@@ -52,7 +48,7 @@ object TriGramModel {
     memory
   }
 
-  def countTag(sentences: List[List[List[String]]], tag: String, tag2: String, tag3: String): Int = {
+  def count(sentences: List[List[List[String]]], tag: String, tag2: String, tag3: String): Int = {
     sentences
       .map((words) => {
         var n = 0

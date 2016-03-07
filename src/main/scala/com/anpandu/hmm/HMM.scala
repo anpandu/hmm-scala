@@ -18,19 +18,19 @@ class HMM(val sentences: List[List[List[String]]],
   val sentences_length = sentences.flatten.length.toDouble
 
   def countUniGramTag(tag: String): Int = {
-    unigram.countTag(tag)
+    unigram.count(tag)
   }
 
   def countBiGramTag(tag: String, tag2: String): Int = {
-    bigram.countTag(tag, tag2)
+    bigram.count(tag, tag2)
   }
 
   def countTriGramTag(tag: String, tag2: String, tag3: String): Int = {
-    trigram.countTag(tag, tag2, tag3)
+    trigram.count(tag, tag2, tag3)
   }
 
   def countWordTag(word: String, tag: String): Int = {
-    wordtag.countWordTag(word, tag)
+    wordtag.count(word, tag)
   }
 
   def emission(word: String, tag: String): Double = {

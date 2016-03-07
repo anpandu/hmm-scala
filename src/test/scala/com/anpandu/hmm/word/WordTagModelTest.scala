@@ -34,13 +34,13 @@ class WordTagModelTest extends FunSpec with ScalaFutures with TimeLimitedTests {
       assert(wordtag2.toJSON() == ex_memory_json)
     }
 
-    it("countWordTag") {
+    it("count") {
       val ex_sentences = """[[["Saya","PRP"],["terkena","VBT"],["bisa","NN"],["ular","NN"],[".","."]],[["Bisa","NN"],["ular","NN"],["bisa","MD"],["membunuh","VBT"],["orang","NN"],[".","."]],[["Kamu","PRP"],["bisa","MD"],["tidur","VBI"],[".","."]],[["Burung","NN"],["bisa","MD"],["terbang","VBI"],[".","."]],[["Kamu","PRP"],["bisa","MD"]],[["Rani","NNP"],["dan","CC"],["Budi","NNP"],["duduk","VBI"],["di","IN"],["bangku","NN"],[".","."]]]"""
       val wordtag: WordTagModel = WordTagModel.create(ex_sentences)
-      assert(wordtag.countWordTag(".", ".") == 5)
-      assert(wordtag.countWordTag("Kamu", "PRP") == 2)
-      assert(wordtag.countWordTag("Kamu", "NN") == 0)
-      assert(wordtag.countWordTag(".", "WRONGXXX") == 0)
+      assert(wordtag.count(".", ".") == 5)
+      assert(wordtag.count("Kamu", "PRP") == 2)
+      assert(wordtag.count("Kamu", "NN") == 0)
+      assert(wordtag.count(".", "WRONGXXX") == 0)
     }
   }
 }

@@ -3,15 +3,11 @@ package com.anpandu.hmm.word
 import play.api.libs.json._
 import scala.collection.immutable.{ Map, HashMap }
 
-class BiGramModel(val memory: Map[String, Int]) {
+class BiGramModel(override val memory: Map[String, Int]) extends Memory(memory) {
 
-  def countTag(tag: String, tag2: String): Int = {
-    var index = tag + "_" + tag2
-    memory getOrElse (index, 0)
-  }
-
-  def toJSON(): String = {
-    Json.stringify(Json.toJson(memory.toMap))
+  def count(tag: String, tag2: String): Int = {
+    val index = tag + "_" + tag2
+    get(index)
   }
 }
 
@@ -42,7 +38,7 @@ object BiGramModel {
     new_tags.foreach((tag) => {
       new_tags.foreach((tag2) => {
         var index = tag + "_" + tag2
-        var ct = countTag(sentences, tag, tag2)
+        var ct = count(sentences, tag, tag2)
         if (ct > 0)
           memory += (index -> ct)
       })
@@ -50,7 +46,7 @@ object BiGramModel {
     memory
   }
 
-  def countTag(sentences: List[List[List[String]]], tag: String, tag2: String): Int = {
+  def count(sentences: List[List[List[String]]], tag: String, tag2: String): Int = {
     sentences
       .map((words) => {
         var n = 0

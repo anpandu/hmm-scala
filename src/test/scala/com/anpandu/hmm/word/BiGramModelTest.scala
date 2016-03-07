@@ -34,14 +34,14 @@ class BiGramModelTest extends FunSpec with ScalaFutures with TimeLimitedTests {
       assert(bigram2.toJSON() == ex_memory_json)
     }
 
-    it("countTag") {
+    it("count") {
       val ex_sentences = """[[["Saya","PRP"],["terkena","VBT"],["bisa","NN"],["ular","NN"],[".","."]],[["Bisa","NN"],["ular","NN"],["bisa","MD"],["membunuh","VBT"],["orang","NN"],[".","."]],[["Kamu","PRP"],["bisa","MD"],["tidur","VBI"],[".","."]],[["Burung","NN"],["bisa","MD"],["terbang","VBI"],[".","."]],[["Kamu","PRP"],["bisa","MD"]],[["Rani","NNP"],["dan","CC"],["Budi","NNP"],["duduk","VBI"],["di","IN"],["bangku","NN"],[".","."]]]"""
       val bigram: BiGramModel = BiGramModel.create(ex_sentences)
-      assert(bigram.countTag("NN", "NN") == 2)
-      assert(bigram.countTag("NN", "WRONGXXX") == 0)
-      assert(bigram.countTag("PRP", "PRP") == 0)
-      assert(bigram.countTag("_START_", "NN") == 2)
-      assert(bigram.countTag("_START_", "_START_") == 6)
+      assert(bigram.count("NN", "NN") == 2)
+      assert(bigram.count("NN", "WRONGXXX") == 0)
+      assert(bigram.count("PRP", "PRP") == 0)
+      assert(bigram.count("_START_", "NN") == 2)
+      assert(bigram.count("_START_", "_START_") == 6)
     }
   }
 }

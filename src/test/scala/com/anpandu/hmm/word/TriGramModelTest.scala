@@ -34,13 +34,13 @@ class TriGramModelTest extends FunSpec with ScalaFutures with TimeLimitedTests {
       assert(trigram2.toJSON() == ex_memory_json)
     }
 
-    it("countTag") {
+    it("count") {
       val ex_sentences = """[[["Saya","PRP"],["terkena","VBT"],["bisa","NN"],["ular","NN"],[".","."]],[["Bisa","NN"],["ular","NN"],["bisa","MD"],["membunuh","VBT"],["orang","NN"],[".","."]],[["Kamu","PRP"],["bisa","MD"],["tidur","VBI"],[".","."]],[["Burung","NN"],["bisa","MD"],["terbang","VBI"],[".","."]],[["Kamu","PRP"],["bisa","MD"]],[["Rani","NNP"],["dan","CC"],["Budi","NNP"],["duduk","VBI"],["di","IN"],["bangku","NN"],[".","."]]]"""
       val trigram: TriGramModel = TriGramModel.create(ex_sentences)
-      assert(trigram.countTag("NN", "NN", "MD") == 1)
-      assert(trigram.countTag("NN", "NN", "WRONGXXX") == 0)
-      assert(trigram.countTag("PRP", "PRP", "PRP") == 0)
-      assert(trigram.countTag("_START_", "_START_", "NN") == 2)
+      assert(trigram.count("NN", "NN", "MD") == 1)
+      assert(trigram.count("NN", "NN", "WRONGXXX") == 0)
+      assert(trigram.count("PRP", "PRP", "PRP") == 0)
+      assert(trigram.count("_START_", "_START_", "NN") == 2)
     }
   }
 }
