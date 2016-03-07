@@ -1,5 +1,6 @@
 package com.anpandu.hmm
 
+import com.anpandu.hmm.word._
 import play.api.libs.json._
 import scala.collection.immutable.{ Map, HashMap }
 import scala.io.Source

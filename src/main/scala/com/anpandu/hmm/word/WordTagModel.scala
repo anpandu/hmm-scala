@@ -1,4 +1,4 @@
-package com.anpandu.hmm
+package com.anpandu.hmm.word
 
 import play.api.libs.json._
 import scala.collection.immutable.{ Map, HashMap }

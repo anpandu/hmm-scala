@@ -1,4 +1,4 @@
-package com.anpandu.hmm
+package com.anpandu.hmm.word
 
 import org.specs2.mutable._
 import scala.concurrent._
