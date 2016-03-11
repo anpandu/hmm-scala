@@ -177,7 +177,7 @@ class HMM(val sentences: List[List[List[String]]],
 object HMM {
 
   def createFromModel(_path: String) = {
-    val source = Source.fromFile(_path)
+    val source = Source.fromFile(_path, "ISO-8859-1")
     val content = source.getLines.toList.mkString
     source.close()
 
@@ -194,7 +194,7 @@ object HMM {
   }
 
   def createFromCorpus(_path: String, _threshold: Int = 5) = {
-    val source = Source.fromFile(_path)
+    val source = Source.fromFile(_path, "ISO-8859-1")
     val content = source.getLines.toList.mkString
     source.close()
     create(content, _threshold)
