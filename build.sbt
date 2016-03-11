@@ -1,11 +1,11 @@
 
 // General
 
-organization := "org.example"
+organization := "id.nolimit"
 
 name := """hmm-scala"""
 
-version := "1.0.0"
+version := "1.1.0"
 
 scalaVersion := "2.10.3"
 
@@ -29,34 +29,4 @@ libraryDependencies ++= Seq(
 
 // Publishing
 
-publishMavenStyle := true
-
-publishTo := {
-  val nexus = "https://oss.sonatype.org/"
-  if (isSnapshot.value)
-    Some("snapshots" at nexus + "content/repositories/snapshots")
-  else
-    Some("releases" at nexus + "service/local/staging/deploy/maven2")
-}
-
-pomExtra :=
-  <url>http://org.example/hello-sbt</url>
-    <licenses>
-      <license>
-        <name>CC0 1.0 Universal</name>
-        <url>https://github.com/exampleorg/hello-sbt/blob/master/LICENSE</url>
-        <distribution>repo</distribution>
-      </license>
-    </licenses>
-    <scm>
-      <url>git@github.com:exampleorg/hello-sbt.git</url>
-      <connection>scm:git:git@github.com:exampleorg/hello-sbt.git</connection>
-    </scm>
-    <developers>
-      <developer>
-        <id>mr-activator</id>
-        <name>Mr. Activator</name>
-        <url>http://org.example/mr-activator</url>
-      </developer>
-    </developers>
-
+publishTo := Some("NoLimit Nexus" at "http://nexus.nolimit.id/nexus/content/repositories/hmm-scala")

@@ -136,7 +136,7 @@ class HMM(val sentences: List[List[List[String]]],
       .sortBy((tup) => { -tup._3 })
       .map((tup) => { (tup._1, tup._2) })
       .distinct
-      .take(5)
+      .take(3)
     val candidate_result = best_tags
       .map((tup) => { pi(n, words, tup._1, tup._2) })
     val result = candidate_result
