@@ -124,7 +124,10 @@ class HMM(val sentences: List[List[List[String]]],
     tags.foreach((tag1) => {
       tags.foreach((tag2) => {
         tags.foreach((tag3) => {
-          val score = countBiGramTag(tag1, tag2).toDouble * emission(words(n - 1), tag2) * countBiGramTag(tag2, tag3).toDouble * emission(words(n), tag3)
+          val score = n match {
+            case 0 => countBiGramTag(tag2, tag3).toDouble * emission(words(n), tag3)
+            case _ => countBiGramTag(tag1, tag2).toDouble * emission(words(n - 1), tag2) * countBiGramTag(tag2, tag3).toDouble * emission(words(n), tag3)
+          }
           if (score > 0)
             candidate_tags = candidate_tags :+ (tag2, tag3, score)
         })
